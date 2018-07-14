@@ -7,10 +7,6 @@ class ListBook extends Component {
     books: PropTypes.array.isRequired,
     changeShelf: PropTypes.func.isRequired
   }
-
-  state = {
-    shelfChange: false
-  }
   
   render() {
     const { books, changeShelf } = this.props

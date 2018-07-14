@@ -12,69 +12,60 @@ class Search extends Component {
 
   state = {
     query: '',
-    newBooks: [],
-    searchErr: false
+    searchResults: [],
   }
 
-  getBooks = (event) => {
-
-    const query = event.target.value.trim()
+  getBooks = (e) => {
+    const query = e.target.value.trim()
     this.setState({ query: query })
 
-    // if user input => run the search
     if (query) {
-      BooksAPI.search(query, 20).then((books) => {
-        books.length > 0 ?  this.setState({newBooks: books, searchErr: false }) : this.setState({ newBooks: [], searchErr: true })
+      BooksAPI.search(query).then((books) => {
+        if (books.length > 0) {
+          this.setState({ searchResults: books })
+        } else {
+          this.setState({ searchResults: [] })
+        }
       })
-
-    // if query is empty => reset state to default
-  } else this.setState({newBooks: [], searchErr: false })
+    } else {
+      this.setState({ searchResults: [] })
+    }
   }
 
   render() {
-
-    const { query, newBooks, searchErr } = this.state
+    const { query, searchResults } = this.state
     const { books, changeShelf } = this.props
 
-      return (
-        <div className="search-books">
-          <div className="search-books-bar">
-            <Link className="close-search"  to="/">Close</Link>
-            <div className="search-books-input-wrapper">
-              <input type="text"
-                placeholder="Search by title or author"
-                value={ query }
-                onChange={ this.getBooks } />
-            </div>
-          </div>
-          <div className="search-books-results">
-            { newBooks.length > 0 && (
-              <div>
-                <div className=''>
-                  <h3>Search returned { newBooks.length } books </h3>
-                </div>
-                <ol className="books-grid">
-                  {newBooks.map((book) => (
-                    <Book
-                      book={ book }
-                      books={ books }
-                      key={ book.id }
-                      changeShelf={ changeShelf }
-                    />
-                  ))}
-                </ol>
-              </div>
-            )}
-            { searchErr  && (
-              <div>
-                <div className=''>
-                  <h3>Search returned 0 books.  Please try again!</h3>
-                  </div>
-                </div>
-            )}
+    return (
+      <div className="search-books">
+        <div className="search-books-bar">
+          <Link className="close-search"  to="/">Close</Link>
+          <div className="search-books-input-wrapper">
+            <input type="text"
+              placeholder="Search by title or author"
+              value={ query }
+              onChange={ this.getBooks } />
           </div>
         </div>
-      )}
+        <div className="search-books-results">
+          {searchResults.length > 0 && (
+            <div>
+              <ol className="books-grid">
+                {searchResults.map((book) => (
+                  <Book
+                    book = {book}
+                    books = {books}
+                    changeShelf = {changeShelf}
+                    key = {book.id}
+                  />
+                ))}
+              </ol>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Search
