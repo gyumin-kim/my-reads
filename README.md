@@ -14,7 +14,7 @@ This project emphasizes using React to build the application and provides an API
 ```
 > git clone https://github.com/gyumin-kim/my-reads
 ```
-- `cd ~/.../my-reads`
+- Move to the directory in terminal. `cd ~/.../my-reads`
 
 ### Install
 ```
