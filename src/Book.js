@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import ShelfChanger from './ShelfChanger'
+import noImage from './icons/no-image.png'
 
 class Book extends Component {
 
@@ -12,6 +13,8 @@ class Book extends Component {
 
   render() {
     const { book, books, changeShelf } = this.props
+    const coverImage = (book.imageLinks && book.imageLinks.thumbnail) ? 
+    book.imageLinks.thumbnail : noImage;
 
     return (
       <li>
@@ -19,7 +22,7 @@ class Book extends Component {
           <div className="book-top">
             <div
               className="book-cover"
-              style={{ backgroundImage: `url(${book.imageLinks.thumbnail})`}}>
+              style={{ backgroundImage: `url(${coverImage})`}}>
             </div>
             <ShelfChanger
               book = { book }
